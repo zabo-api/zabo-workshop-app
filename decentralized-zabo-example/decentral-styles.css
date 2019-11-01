@@ -1,7 +1,5 @@
-$body-color: black;
-
 body {
-  color: $body-color;
+  color: black;
   font-family: sans-serif;
   width: 500px;
   margin: auto;

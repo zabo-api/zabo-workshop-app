@@ -6,19 +6,41 @@
   <title>Zabo Hack</title>
 </head>
 <body>
-  <h1>The Crypto Club</h1>
-  <p>Welcome to the Crypto Club! In order to joing our club, you must own crypto. Additionally, we have four divisions:  </p>
-  <ol>
-    <li>Bitcoin Division</li>
-    <li>Ether Division</li>
-    <li>Bitcoin Cash Division</li>
-    <li>Spank Division</li>
-  </ol>
-  <p class="join">In order to join one of the divisions, you must own the currency represented by that division.</p>
-  <p class="join">You may join our club and one of the divisions immediately once you connect a wallet and prove ownership! Please click the button below to connect your wallet.</p>
+  <h1>The Awesome Crypto Club</h1>
+  <p>
+    Welcome to the Awesome Crypto Club! In order to join our club, you must own crypto. 
+    We use Zabo to authenticate wallets so our community is quite diverse and covers 
+    many currencies and protocols. Connect your wallet and join today!
+  </p>
+  <button id="connect">CONNECT WALLET TO JOIN</button>
+  <div id="member-welcome"></div>
+  <p class="join">
+    We also have smaller communities within our Awesome Crypto Club. These communities are made
+    up of people with a common interest in a single currency or protocol. Can you guess how
+    you get to join them?
+  </p>
+  <p class="join">
+    Each club you are eligible for will turn green when you become eligible! Feel free to donate
+    to your clubs :D
+  </p>
   <div id="club-info">
-    <button class="club" id="BTC">BTC Club</button><button class="club" id="ETH">ETH Club</button><button class="club" id="BCH">BCH Club</button><button class="club" id="SPANK">SPANK Club</button>
+    <button class="club" id="BTC" address="n2vak6nVQwfwhA6RrERvGwfrFPrXEKr9xU">BTC Club</button>
+    <button class="club" id="ETH" address="0x475dEd3e48d0182Fd684E3F78a1eE17659482C3B">ETH Club</button>
+    <button class="club" id="BCH" address="notavailable">BCH Club</button>
+    <button class="club" id="SPANK" address="0x475dEd3e48d0182Fd684E3F78a1eE17659482C3B">SPANK Club</button>
+    <button class="club" id="SNT" address="0x475dEd3e48d0182Fd684E3F78a1eE17659482C3B">SNT Club</button>
+    <button class="club" id="ATOM"address="notavailable">ATOM Club</button>
   </div>
-  <button id="connect">CONNECT WALLET</button>
+  <div id="donation-input">  
+    <fieldset>
+      <legend>Donate Crypto!</legend>
+      <div id="club-address"></div>
+      <input type="text" id="amount" name="amount">
+      <p>Now donate your crypto</p>
+      <button id="donate-button">Donate</button>
+    </fieldset>
+  </div>
+  <div class='bottom-text' id="sent-crypto">Thank you for your donation! View your transaction below.</div>
+  <div class='bottom-text' id="tx-info"></div>
 </body>
 </html>
