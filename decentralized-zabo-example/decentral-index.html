@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My App</title>
+  <link rel="stylesheet" type="text/css" href="decentral-styles.css">
+  <script src="../node_modules/zabo-sdk-js/assets/zabo_erc20_tokens.js"></script>
+  <script src="../node_modules/zabo-sdk-js/dist/zabo.js"></script>
+</head>
+<body>
+  <!DOCTYPE html>
+  <h1>The Awesome Crypto Club</h1>
+  <p>
+    Welcome to the Awesome Crypto Club! In order to join our club, you must own crypto. 
+    We use Zabo to authenticate wallets so our community is quite diverse and covers 
+    many currencies and protocols. Connect your wallet and join today!
+  </p>
+  <button id="connect">CONNECT WALLET TO JOIN</button>
+  <div id="member-welcome"></div>
+  <p class="join">
+    We also have smaller communities within our Awesome Crypto Club. These communities are made
+    up of people with a common interest in a single currency or protocol. Can you guess how
+    you get to join them?
+  </p>
+  <p class="join">
+    Each club you are eligible for will turn green when you become eligible! Feel free to donate
+    to your clubs :D
+  </p>
+  <div id="club-info">
+    <button class="club" id="BTC" address="n2vak6nVQwfwhA6RrERvGwfrFPrXEKr9xU">BTC Club</button>
+    <button class="club" id="ETH" address="0x475dEd3e48d0182Fd684E3F78a1eE17659482C3B">ETH Club</button>
+    <button class="club" id="BCH" address="notavailable">BCH Club</button>
+    <button class="club" id="SPANK" address="0x475dEd3e48d0182Fd684E3F78a1eE17659482C3B">SPANK Club</button>
+    <button class="club" id="SNT" address="0x475dEd3e48d0182Fd684E3F78a1eE17659482C3B">SNT Club</button>
+    <button class="club" id="ATOM"address="notavailable">ATOM Club</button>
+  </div>
+  <div id="donation-input">  
+    <fieldset>
+      <legend>Donate Crypto!</legend>
+      <div id="club-address"></div>
+      <input type="text" id="amount" name="amount">
+      <p>Now donate your crypto</p>
+      <button id="donate-button">Donate</button>
+    </fieldset>
+  </div>
+  <div class='bottom-text' id="sent-crypto">Thank you for your donation!</div>
+  <div class='bottom-text' id="tx-info"></div>
+
+<script>
+  Zabo.init({
+  decentralized: true,
+  useNode: 'http://localhost:8545'
+}).then(() => {
+  let selectedClub = ''
+let toAddress = ''
+
+document.querySelector('#connect').addEventListener('click', async () => {
+    let currency = {}
+    let b = await Zabo.accounts.getBalances()
+    let node = document.createTextNode(
+      "Congratulations, we see that you hold " +
+      b + " ETH in this wallet. You are now part of the Awesome Crypto Club.")
+
+    let div = document.createElement('div')
+    div.appendChild(node)
+    document.querySelector('#member-welcome').appendChild(div)
+
+    let clubButtons = document.getElementsByClassName('club')
+    for (let i = 0; i < clubButtons.length; i++) {
+      if (clubButtons[i].id === 'ETH') {
+        clubButtons[i].style.color = 'rgb(39, 155, 54)'
+        clubButtons[i].style.borderColor = 'rgb(39, 155, 54)'
+        clubButtons[i].addEventListener('click', () => {
+          selectedClub = clubButtons[i].id
+          toAddress = clubButtons[i].getAttribute('address')
+          document.getElementById('donation-input').style.display = 'block'
+        })
+      }
+    }
+});
+
+document.querySelector('#donate-button').addEventListener('click', () => {
+
+  let donateValue = document.getElementById('amount').value
+  Zabo.transactions.send({
+    currency: selectedClub,
+    toAddress: toAddress,
+    amount: donateValue
+  }).then(tx => {
+    console.log(tx)
+    let bottomText = document.getElementsByClassName('bottom-text')
+    for (let i = 0; i < bottomText.length; i++) {
+      bottomText[i].style.display = 'block'
+    }
+  })
+});
+})
+</script>
+</body>
+</html>
