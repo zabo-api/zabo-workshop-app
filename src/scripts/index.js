@@ -2,12 +2,16 @@ import './../styles/index.scss'
 import 'zabo-sdk-js'
 
 Zabo.init({
-  clientId: 'njACEbH5kqNEzaDBIP1orCcWth95okgdLRKXLnfBFsib3OK51mrvOoNKjkBEJohY',
+  clientId: 'pQ9TTe1q8AXHiWkCFb7GSISTYlWHc1lU3Wv70972CEjM7u73R8EEPT15F6hLesi9',
   env: 'sandbox'
 })
 
 let selectedClub = ''
 let toAddress = ''
+let memberWelcome = document.querySelector("#member-welcome")
+let clubButtons = document.getElementsByClassName('club')
+let donateButton = document.querySelector('#donate-button')
+let amountInput = document.getElementById('amount')
 
 document.querySelector('#connect').addEventListener('click', () => {
   Zabo.connect().onConnection(function (account) {
@@ -20,18 +24,11 @@ document.querySelector('#connect').addEventListener('click', () => {
 
     let div = document.createElement('div')
     div.appendChild(node)
-    document.querySelector('#member-welcome').appendChild(div)
+    memberWelcome.appendChild(div)
 
-    let clubButtons = document.getElementsByClassName('club')
     for (let i = 0; i < clubButtons.length; i++) {
-      if (account.currencies.some(a => a.currency === clubButtons[i].id)) {
-        clubButtons[i].style.color = 'rgb(39, 155, 54)'
-        clubButtons[i].style.borderColor = 'rgb(39, 155, 54)'
-        clubButtons[i].addEventListener('click', () => {
-          selectedClub = clubButtons[i].id
-          toAddress = clubButtons[i].getAttribute('address')
-          document.getElementById('donation-input').style.display = 'block'
-        })
+      if (account.currencies.some(c => c.currency === clubButtons[i].id)) {
+        makeButtonActive(clubButtons[i])
       }
     }
   }).onError(error => {
@@ -39,21 +36,35 @@ document.querySelector('#connect').addEventListener('click', () => {
   });
 });
 
-document.querySelector('#donate-button').addEventListener('click', () => {
+donateButton.addEventListener('click', () => {
 
-  let donateValue = document.getElementById('amount').value
+  let donateValue = amountInput.value
   Zabo.transactions.send({
     currency: selectedClub,
     toAddress: toAddress,
     amount: donateValue
   }).then(tx => {
-    let txInfoDiv = document.getElementById('tx-info')
-    let node = document.createTextNode(JSON.stringify(tx))
-    txInfoDiv.appendChild(node)
-    let bottomText = document.getElementsByClassName('bottom-text')
-    for (let i = 0; i < bottomText.length; i++) {
-      bottomText[i].style.display = 'block'
-
-    }
+    displayTx(tx)
   })
 });
+
+
+function makeButtonActive(button) {
+  button.style.color = 'green'
+  button.style.borderColor = 'green'
+  button.addEventListener('click', () => {
+    selectedClub = button.id
+    toAddress = button.getAttribute('address')
+    document.getElementById('donation-input').style.display = 'block'
+  })
+}
+
+function displayTx(tx) {
+  let txInfoDiv = document.getElementById('tx-info')
+  let node = document.createTextNode(JSON.stringify(tx))
+  txInfoDiv.appendChild(node)
+  let bottomText = document.getElementsByClassName('bottom-text')
+  for (let i = 0; i < bottomText.length; i++) {
+    bottomText[i].style.display = 'block'
+  }
+}
